@@ -1,0 +1,25 @@
+aca-py start \
+   --endpoint http://127.0.0.1:8870 \
+   --label data-utilization-org.agent \
+   --inbound-transport http 0.0.0.0 8870 \
+   --outbound-transport http \
+   --admin 0.0.0.0 8871 \
+   --admin-insecure-mode \
+   --recreate-wallet \
+   --auto-provision \
+   --wallet-type indy \
+   --wallet-name duo_wallet \
+   --wallet-key duo_wallet_key \
+   --genesis-url http://localhost:9000/genesis \
+   --trace-target log \
+   --trace-tag acapy.events \
+   --trace-label data-utilization-org.agent.trace \
+   --preserve-exchange-records \
+   --auto-ping-connection \
+   --auto-respond-messages \
+   --auto-accept-requests \
+   --auto-accept-invites \
+   --auto-respond-credential-proposal \
+   --auto-respond-credential-offer \
+   --auto-respond-credential-request \
+   --auto-store-credential
