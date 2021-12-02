@@ -129,8 +129,6 @@ async def invoke(coroutine, params):
     print(result)
 
 if __name__ == '__main__':
-    test_mode = False
-
     func_map = dict()
     func_map['create_wallet'] = create_wallet
     func_map['create_did'] = create_did
@@ -139,27 +137,20 @@ if __name__ == '__main__':
     func_map['sign_verify'] = sign_verify
     func_map['make_challenge'] = make_challenge
     func_map['verify_challenge'] = verify_challenge
-    func_map['test'] = test
 
     func_name = sys.argv[1]
     param_obj_str = sys.argv[2]
     params = json.loads(param_obj_str)
 
-    if test_mode == True:
+    try:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(invoke(func_map[func_name], params))
         loop.close()
 
-    else:
-        try:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(invoke(func_map[func_name], params))
-            loop.close()
-
-        except:
-            msg = dict()
-            msg['msg'] = 'fail'
-            print(msg)
+    except:
+        msg = dict()
+        msg['msg'] = 'fail'
+        print(msg)
             
 
         
