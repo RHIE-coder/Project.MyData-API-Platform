@@ -17,8 +17,6 @@ async def create_wallet(params):
 
     return msg
 
-
-
 async def create_did(params):
     msg = dict()
 
@@ -77,8 +75,6 @@ async def sign_verify(params):
 
     signature_base64 = bytes(signature_base64, 'utf-8')
     signature = base64.b64decode(signature_base64)
-
-    print(signature)
     
     is_verified = await crypto.crypto_verify(verkey, plain, signature)
 
@@ -103,7 +99,7 @@ async def make_challenge(params):
     return msg
 
 
-async def verify_chanlleng(params):
+async def verify_challenge(params):
 
     wallet_config = json.dumps(params['wallet_config'])
     wallet_credentials = json.dumps(params['wallet_credentials'])
@@ -142,7 +138,7 @@ if __name__ == '__main__':
     func_map['sign_message'] = sign_message
     func_map['sign_verify'] = sign_verify
     func_map['make_challenge'] = make_challenge
-    func_map['verify_chanlleng'] = verify_chanlleng
+    func_map['verify_challenge'] = verify_challenge
     func_map['test'] = test
 
     func_name = sys.argv[1]
@@ -164,6 +160,7 @@ if __name__ == '__main__':
             msg = dict()
             msg['msg'] = 'fail'
             print(msg)
+            
 
         
         

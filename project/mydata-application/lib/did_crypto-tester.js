@@ -12,30 +12,49 @@ const did_crypto_call = require('./utils')['did_crypto_call']
 
 module.exports = did_crypto_call
 
-async function test() {
-    wallet_config = { id: "tester-wallet" }
-    wallet_credentials = { key: "test-wallet-key" }
-
-    wallet_params = {
-        wallet_config,
-        wallet_credentials,
+function line(message){
+    if(message !== undefined){
+        console.log(`===============${message}===============`)
+    }else{
+        console.log(`========================================`)
     }
-
-    const result = await did_crypto_call("did_list", wallet_params)
-    console.log(result)
+    console.log()
+    console.log()
 }
 
-async function test2() {
-    wallet_config = { id: "tester-wallet" }
-    wallet_credentials = { key: "test-wallet-key" }
+const wallet_config = { id: "test3-wallet" }
+const wallet_credentials = { key: "test2-wallet-key" }
+
+async function step1() {
+    
+    wallet_params = {
+        wallet_config,
+        wallet_credentials,
+    }
+    
+    line("create wallet")
+    const wallet_result = await did_crypto_call("create_wallet", wallet_params)
+    console.log(wallet_result)
+    line("create did")
+    const did_result = await did_crypto_call("create_did", wallet_params)
+    console.log(did_result)
+    line("did list")
+    const list_result = await did_crypto_call("did_list", wallet_params)
+    console.log(list_result)
+    line()
+}
+
+async function step2() {
 
     wallet_params = {
         wallet_config,
         wallet_credentials,
     }
 
+
+    line("get did")
     const get_did_list = await did_crypto_call("did_list", wallet_params)
-    
+    console.log(get_did_list)
     did_list = JSON.parse(get_did_list);
     did_set = did_list[0]
 
@@ -48,13 +67,13 @@ async function test2() {
         verkey,
         target
     }
-
+    line("sign message")
+    
     console.log(sign_params)
-    console.log("====================================")
     
     const sig = await did_crypto_call("sign_message", sign_params)
     const signature = sig.trim()
-    
+    console.log("sign : " + signature)
 
     // // Base64 Encoding
     // const base64EncodedText = Buffer.from(sig, "utf8").toString('base64');
@@ -69,28 +88,27 @@ async function test2() {
         plain : target,
         signature
     }
+
+    line("sign verify")
     console.log(verify_params)
-    console.log(JSON.stringify(verify_params))
 
     const result = await did_crypto_call("sign_verify", verify_params)
     console.log(result)
-    console.log("====================================")
+    
 }
 
-async function test3(){
+async function step3(){
     // func_map['make_challenge'] = make_challenge
     // func_map['verify_chanlleng'] = verify_chanlleng
-
-    wallet_config = { id: "tester-wallet" }
-    wallet_credentials = { key: "test-wallet-key" }
 
     wallet_params = {
         wallet_config,
         wallet_credentials,
     }
 
+    line("get did")
     const get_did_list = await did_crypto_call("did_list", wallet_params)
-    
+    console.log(get_did_list)
     did_list = JSON.parse(get_did_list);
     did_set = did_list[0]
 
@@ -103,24 +121,34 @@ async function test3(){
         target
     }
 
+    line("make challenge")
     console.log(make_challenge_params)
-    console.log(JSON.stringify(make_challenge_params))
-    console.log("====================================")
     
     const chall = await did_crypto_call("make_challenge", make_challenge_params)
     const challenge = chall.trim()
     console.log(challenge)
 
-    console.log("====================================")
+    
     verify_params = {
         ...wallet_params,
         verkey,
         challenge,
     }
 
-    const res = await did_crypto_call("verify_chanlleng", verify_params)
+    line("verify challenge")
+    console.log(verify_params)
+    const res = await did_crypto_call("verify_challenge", verify_params)
     console.log(res)
-
 }
 
-test3()
+
+const arg = process.argv[2];
+
+
+if(arg === "1"){
+    step1()
+}else if(arg == "2"){
+    step2()
+}else if(arg == "3"){
+    step3()
+}

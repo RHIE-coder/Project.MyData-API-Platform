@@ -17,8 +17,12 @@ function deepJSONstring(json) {
     return data;
 }
 
+const spawn = require('child_process').spawn;
+
 function did_crypto_call(funcName, paramObj) {
-    const python_module = spawn('python3', [`${process.cwd()}/../module/did-crypto.py`, funcName, JSON.stringify(paramObj)])
+    const python_module = spawn('python3', [`${process.cwd()}/../module/did-crypto.py`, 
+                                             funcName, 
+                                             JSON.stringify(paramObj)])
     return new Promise(
         function (resolve, reject) {
             python_module.stdout.on('data', function (result) {
@@ -27,5 +31,6 @@ function did_crypto_call(funcName, paramObj) {
         })
 }
 
+module.exports = {did_crypto_call}
 
 module.exports = {deepJSONstring, did_crypto_call}
