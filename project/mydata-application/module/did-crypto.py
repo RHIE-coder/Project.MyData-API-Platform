@@ -43,7 +43,6 @@ async def did_list(params):
     wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
     did_list = await did.list_my_dids_with_meta(wallet_handle)
-    # msg = json.loads(did_list)
     msg = did_list
 
     await wallet.close_wallet(wallet_handle)
